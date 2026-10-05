@@ -1,6 +1,6 @@
 {
   "name": "liquid-glass-design",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Build app UIs in the style of Apple's Liquid Glass (iOS 26) on any platform: Android Compose, web, Windows, SwiftUI and Flutter. Rules, tokens, components, templates and a review checklist.",
   "author": {
     "name": "Mert Demirdöven",
