@@ -1,0 +1,123 @@
+/* Liquid Glass design tokens: iOS semantic colors, type and shape as CSS custom properties.
+   Light/dark follow the OS; force one with <html data-theme="light|dark">. Change --lg-tint per app. */
+
+:root {
+  color-scheme: light dark;
+
+  --lg-tint: #007aff;
+  --lg-bg: #f2f2f7;
+  --lg-cell: #ffffff;
+  --lg-label: #000000;
+  --lg-label-2: rgba(60, 60, 67, 0.6);
+  --lg-label-3: rgba(60, 60, 67, 0.3);
+  --lg-separator: rgba(60, 60, 67, 0.29);
+  --lg-fill: rgba(118, 118, 128, 0.12);
+  --lg-thumb: #ffffff;
+  --lg-green: #34c759;
+  --lg-blue: #007aff;
+  --lg-orange: #ff9500;
+  --lg-red: #ff3b30;
+
+  /* Regular glass: blurred, saturated backdrop under a light tint, with a specular rim and a soft shadow. */
+  --lg-glass-tint: rgba(250, 250, 250, 0.4);
+  --lg-glass-blur: 8px;
+  --lg-glass-saturate: 180%;
+  --lg-glass-selection: rgba(0, 0, 0, 0.1);
+  --lg-rim-strong: rgba(255, 255, 255, 0.7);
+  --lg-rim-soft: rgba(255, 255, 255, 0.12);
+  --lg-glass-shadow: 0 6px 24px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.06);
+  --lg-glass-border: transparent;
+
+  --lg-font: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+
+  --lg-radius-group: 26px;
+  --lg-radius-icon: 8px;
+  --lg-margin: 16px;
+  --lg-row-height: 52px;
+  --lg-tabbar-height: 64px;
+  --lg-tabbar-bottom: 12px;
+  --lg-bottom-clearance: calc(var(--lg-tabbar-height) + var(--lg-tabbar-bottom) + 28px + env(safe-area-inset-bottom));
+
+  --lg-ease-snappy: cubic-bezier(0.2, 0.9, 0.2, 1);
+  --lg-ease-gel: cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --lg-tint: #0a84ff;
+    --lg-bg: #000000;
+    --lg-cell: #1c1c1e;
+    --lg-label: #ffffff;
+    --lg-label-2: rgba(235, 235, 245, 0.6);
+    --lg-label-3: rgba(235, 235, 245, 0.3);
+    --lg-separator: rgba(84, 84, 88, 0.6);
+    --lg-fill: rgba(118, 118, 128, 0.24);
+    --lg-thumb: #636366;
+    --lg-green: #30d158;
+    --lg-blue: #0a84ff;
+    --lg-orange: #ff9f0a;
+    --lg-red: #ff453a;
+    --lg-glass-tint: rgba(18, 18, 18, 0.4);
+    --lg-glass-selection: rgba(255, 255, 255, 0.1);
+    --lg-rim-strong: rgba(255, 255, 255, 0.35);
+    --lg-rim-soft: rgba(255, 255, 255, 0.06);
+    --lg-glass-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --lg-tint: #0a84ff;
+  --lg-bg: #000000;
+  --lg-cell: #1c1c1e;
+  --lg-label: #ffffff;
+  --lg-label-2: rgba(235, 235, 245, 0.6);
+  --lg-label-3: rgba(235, 235, 245, 0.3);
+  --lg-separator: rgba(84, 84, 88, 0.6);
+  --lg-fill: rgba(118, 118, 128, 0.24);
+  --lg-thumb: #636366;
+  --lg-green: #30d158;
+  --lg-blue: #0a84ff;
+  --lg-orange: #ff9f0a;
+  --lg-red: #ff453a;
+  --lg-glass-tint: rgba(18, 18, 18, 0.4);
+  --lg-glass-selection: rgba(255, 255, 255, 0.1);
+  --lg-rim-strong: rgba(255, 255, 255, 0.35);
+  --lg-rim-soft: rgba(255, 255, 255, 0.06);
+  --lg-glass-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+/* Reduced transparency: frostier, nearly opaque glass and no lensing (liquid-glass.js also skips refraction). */
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --lg-glass-blur: 24px;
+    --lg-glass-tint: color-mix(in srgb, var(--lg-cell) 92%, transparent);
+  }
+}
+
+/* Increased contrast: solid surfaces with a visible border. */
+@media (prefers-contrast: more) {
+  :root {
+    --lg-glass-tint: var(--lg-cell);
+    --lg-glass-border: color-mix(in srgb, var(--lg-label) 35%, transparent);
+    --lg-label-2: color-mix(in srgb, var(--lg-label) 75%, transparent);
+  }
+}
+
+/* iOS text styles on Inter (SF on Apple devices via -apple-system). Inter's optical size follows the font size. */
+.lg-large-title { font: 700 34px/41px var(--lg-font); letter-spacing: -0.6px; }
+.lg-title1 { font: 700 28px/34px var(--lg-font); letter-spacing: -0.5px; }
+.lg-title2 { font: 700 22px/28px var(--lg-font); letter-spacing: -0.4px; }
+.lg-title3 { font: 600 20px/25px var(--lg-font); letter-spacing: -0.3px; }
+.lg-headline { font: 600 17px/22px var(--lg-font); letter-spacing: -0.3px; }
+.lg-body { font: 400 17px/22px var(--lg-font); letter-spacing: -0.3px; }
+.lg-callout { font: 400 16px/21px var(--lg-font); letter-spacing: -0.25px; }
+.lg-subheadline { font: 400 15px/20px var(--lg-font); letter-spacing: -0.2px; }
+.lg-footnote { font: 400 13px/18px var(--lg-font); letter-spacing: -0.1px; }
+.lg-caption1 { font: 400 12px/16px var(--lg-font); }
+.lg-caption2 { font: 500 11px/13px var(--lg-font); }
+.lg-figures { font-variant-numeric: tabular-nums; }

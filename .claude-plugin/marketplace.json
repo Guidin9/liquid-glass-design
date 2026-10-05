@@ -1,0 +1,14 @@
+{
+  "name": "liquid-glass-design",
+  "description": "Liquid Glass (Apple iOS 26 style) UI design skill for every platform",
+  "owner": {
+    "name": "Mert Demirdöven"
+  },
+  "plugins": [
+    {
+      "name": "liquid-glass-design",
+      "source": "./",
+      "description": "Apple-style Liquid Glass interfaces on Android, web, Windows, SwiftUI and Flutter: rules, tokens, components, templates and a review checklist."
+    }
+  ]
+}

@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Liquid Glass demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="liquid-glass.css">
+  <style>
+    :root { --lg-tint: #34c759; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --lg-tint: #30d158; } }
+    :root[data-theme="dark"] { --lg-tint: #30d158; }
+
+    /* Demo-only content: a hero ring and a bar chart to give the glass something to bend. */
+    .hero { display: grid; justify-items: center; gap: 4px; padding: 28px 20px 24px; margin-top: 16px; text-align: center; }
+    .ring { position: relative; width: 220px; height: 220px; }
+    .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+    .ring__track { stroke: color-mix(in srgb, var(--lg-green) 18%, transparent); }
+    .ring__fill { stroke: var(--lg-green); stroke-linecap: round; transition: stroke-dashoffset 0.9s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .ring__center { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; }
+    .ring__number { font: 600 46px/50px var(--lg-font); letter-spacing: -1px; font-variant-numeric: tabular-nums; }
+    .ring__unit { font: 600 20px/25px var(--lg-font); color: var(--lg-label-2); }
+    .chart { display: flex; align-items: flex-end; gap: 6px; height: 140px; padding: 16px; }
+    .chart span { flex: 1; border-radius: 6px 6px 3px 3px; background: linear-gradient(to top, color-mix(in srgb, var(--lg-green) 55%, transparent), var(--lg-green)); }
+    .chart span:nth-child(3n) { background: linear-gradient(to top, color-mix(in srgb, var(--lg-orange) 55%, transparent), var(--lg-orange)); }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body class="lg-app">
+  <header class="lg-topbar"><p class="lg-topbar__title lg-headline" id="inline-title">Battery</p></header>
+
+  <!-- Summary tab -->
+  <main class="lg-page" id="panel-summary" role="tabpanel" aria-labelledby="tab-summary">
+    <h1 class="lg-large-title">Battery</h1>
+
+    <section class="lg-group hero" aria-label="Battery level and current">
+      <div class="ring">
+        <svg viewBox="0 0 220 220" aria-hidden="true">
+          <circle class="ring__track" cx="110" cy="110" r="99" fill="none" stroke-width="22"/>
+          <circle class="ring__fill" id="ring" cx="110" cy="110" r="99" fill="none" stroke-width="22"
+                  stroke-dasharray="622" stroke-dashoffset="622"/>
+        </svg>
+        <div class="ring__center">
+          <span><span class="ring__number" id="current">+1850</span><span class="ring__unit"> mA</span></span>
+          <span class="lg-subheadline lg-figures" style="color: var(--lg-label-2); font-weight: 600">77%</span>
+        </div>
+      </div>
+      <p class="lg-headline" style="margin: 16px 0 0">Full in 1 hr 46 min</p>
+      <p class="lg-subheadline" style="margin: 0; color: var(--lg-label-2)">Charging with adapter</p>
+    </section>
+
+    <section class="lg-section">
+      <h2 class="lg-section__header lg-headline">Last 24 hours</h2>
+      <div class="lg-group chart" aria-hidden="true" id="chart"></div>
+    </section>
+
+    <section class="lg-section">
+      <h2 class="lg-section__header lg-headline">Details</h2>
+      <div class="lg-group">
+        <div class="lg-row"><span class="lg-row__title">Power</span><span class="lg-row__value">7.6 W</span></div>
+        <div class="lg-row"><span class="lg-row__title">Voltage</span><span class="lg-row__value">4.10 V</span></div>
+        <div class="lg-row"><span class="lg-row__title">Temperature</span><span class="lg-row__value">36.8 °C</span></div>
+        <a class="lg-row" href="#"><span class="lg-row__title">Battery health</span><span class="lg-row__value">91%</span><span class="lg-chevron" aria-hidden="true"></span></a>
+      </div>
+      <p class="lg-section__footer lg-footnote">Counters reset at midnight.</p>
+    </section>
+  </main>
+
+  <!-- Settings tab -->
+  <main class="lg-page" id="panel-settings" role="tabpanel" aria-labelledby="tab-settings" hidden>
+    <h1 class="lg-large-title">Settings</h1>
+
+    <section class="lg-section">
+      <div class="lg-group lg-group--icons">
+        <button class="lg-row" type="button">
+          <span class="lg-icon-tile" style="--lg-tile: var(--lg-red)"><svg viewBox="0 0 960 960" aria-hidden="true"><path d="M646,760L200,760Q183,760 171.5,748.5Q160,737 160,720Q160,703 171.5,691.5Q183,680 200,680L240,680L240,400Q240,367 248.5,335Q257,303 274,274L400,400L288,400L84,196Q73,185 73,168Q73,151 84,140Q95,129 112,129Q129,129 140,140L820,820Q831,831 831.5,847.5Q832,864 820,876Q809,887 792,887Q775,887 764,876L646,760ZM720,509Q720,521 713,531Q706,541 695,546Q684,551 672,548.5Q660,546 652,538L367,253Q360,246 357,238Q354,230 354,221Q354,210 359.5,199.5Q365,189 375,184Q386,179 397,175Q408,171 420,168L420,140Q420,115 437.5,97.5Q455,80 480,80Q505,80 522.5,97.5Q540,115 540,140L540,168Q620,188 670,253Q720,318 720,400L720,509ZM480,880Q450,880 426.5,863.5Q403,847 403,819Q403,811 409.5,805.5Q416,800 424,800L536,800Q544,800 550.5,805.5Q557,811 557,819Q557,847 533.5,863.5Q510,880 480,880Z"/></svg></span>
+          <span class="lg-row__title">Notifications are off<span class="lg-row__subtitle">The live meter stays hidden.</span></span>
+          <span style="color: var(--lg-tint); font-weight: 500">Turn On</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="lg-section">
+      <h2 class="lg-section__header lg-headline">Meter</h2>
+      <div class="lg-group">
+        <label class="lg-row">
+          <span class="lg-row__title">Show live meter<span class="lg-row__subtitle">Status bar icon and notification</span></span>
+          <span class="lg-toggle"><input type="checkbox" role="switch" checked aria-label="Show live meter"><span class="lg-toggle__track"></span><span class="lg-toggle__knob"></span></span>
+        </label>
+        <div class="lg-row lg-row--control">
+          <span id="refresh-label">Refresh rate</span>
+          <div class="lg-segmented" role="radiogroup" aria-labelledby="refresh-label" style="--lg-segments: 3">
+            <span class="lg-segmented__thumb"></span>
+            <input type="radio" name="refresh" id="r1" checked><label for="r1">1 s</label>
+            <input type="radio" name="refresh" id="r2"><label for="r2">2 s</label>
+            <input type="radio" name="refresh" id="r5"><label for="r5">5 s</label>
+          </div>
+        </div>
+      </div>
+      <p class="lg-section__footer lg-footnote">The meter pauses while the screen is off.</p>
+    </section>
+
+    <section class="lg-section">
+      <div class="lg-group">
+        <button class="lg-row lg-row--destructive" type="button">Reset today's counters</button>
+      </div>
+    </section>
+  </main>
+
+  <div class="lg-bottom-edge" aria-hidden="true"></div>
+
+  <nav class="lg-tabbar lg-glass" role="tablist" aria-label="Sections" data-lg-refract>
+    <span class="lg-tabbar__lens" aria-hidden="true"></span>
+    <button class="lg-tab" role="tab" id="tab-summary" aria-controls="panel-summary" aria-selected="true">
+      <svg viewBox="0 0 960 960" aria-hidden="true"><path d="M360,600L236,600Q212,600 200.5,578.5Q189,557 203,537L502,107Q512,93 528,87.5Q544,82 561,88Q578,94 586,109Q594,124 592,141L560,400L715,400Q741,400 751.5,423Q762,446 745,466L416,860Q405,873 389,877Q373,881 358,874Q343,867 334.5,852.5Q326,838 328,821L360,600Z"/></svg>
+      Battery
+    </button>
+    <button class="lg-tab" role="tab" id="tab-settings" aria-controls="panel-settings" aria-selected="false">
+      <svg viewBox="0 0 960 960" aria-hidden="true"><path d="M433,880Q406,880 386.5,862Q367,844 363,818L354,752Q341,747 329.5,740Q318,733 307,725L245,751Q220,762 195,753Q170,744 156,721L109,639Q95,616 101,590Q107,564 128,547L181,507Q180,500 180,493.5Q180,487 180,480Q180,473 180,466.5Q180,460 181,453L128,413Q107,396 101,370Q95,344 109,321L156,239Q170,216 195,207Q220,198 245,209L307,235Q318,227 330,220Q342,213 354,208L363,142Q367,116 386.5,98Q406,80 433,80L527,80Q554,80 573.5,98Q593,116 597,142L606,208Q619,213 630.5,220Q642,227 653,235L715,209Q740,198 765,207Q790,216 804,239L851,321Q865,344 859,370Q853,396 832,413L779,453Q780,460 780,466.5Q780,473 780,480Q780,487 780,493.5Q780,500 778,507L831,547Q852,564 858,590Q864,616 850,639L802,721Q788,744 763,753Q738,762 713,751L653,725Q642,733 630,740Q618,747 606,752L597,818Q593,844 573.5,862Q554,880 527,880L433,880ZM482,620Q540,620 581,579Q622,538 622,480Q622,422 581,381Q540,340 482,340Q423,340 382.5,381Q342,422 342,480Q342,538 382.5,579Q423,620 482,620Z"/></svg>
+      Settings
+    </button>
+  </nav>
+
+  <script src="liquid-glass.js"></script>
+  <script>
+    // Testing aids: ?theme=dark|light forces a theme, ?scroll=420 starts scrolled (content under the glass).
+    const params = new URLSearchParams(location.search);
+    if (params.get("theme")) document.documentElement.dataset.theme = params.get("theme");
+    if (params.get("scroll")) addEventListener("load", () => scrollTo(0, Number(params.get("scroll"))));
+
+    // Demo data: a ring that fills once and a live current reading.
+    const ring = document.getElementById("ring");
+    requestAnimationFrame(() => (ring.style.strokeDashoffset = String(622 * (1 - 0.77))));
+    const chart = document.getElementById("chart");
+    for (let i = 0; i < 24; i++) {
+      const bar = document.createElement("span");
+      bar.style.height = `${25 + Math.round(70 * Math.abs(Math.sin(i / 3.2)))}%`;
+      chart.appendChild(bar);
+    }
+    let ma = 1850;
+    setInterval(() => {
+      ma = Math.max(300, Math.min(3200, ma + Math.round((Math.random() - 0.5) * 180)));
+      document.getElementById("current").textContent = `+${ma}`;
+    }, 1000);
+
+    // Tab switching: show the matching panel and title.
+    const panels = [document.getElementById("panel-summary"), document.getElementById("panel-settings")];
+    const titles = ["Battery", "Settings"];
+    document.querySelector(".lg-tabbar").addEventListener("lg-tabchange", (e) => {
+      panels.forEach((p, i) => (p.hidden = i !== e.detail.index));
+      document.getElementById("inline-title").textContent = titles[e.detail.index];
+      window.scrollTo(0, 0);
+    });
+  </script>
+</body>
+</html>

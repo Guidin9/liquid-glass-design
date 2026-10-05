@@ -1,0 +1,13 @@
+{
+  "name": "liquid-glass-design",
+  "version": "1.0.0",
+  "description": "Build app UIs in the style of Apple's Liquid Glass (iOS 26) on any platform: Android Compose, web, Windows, SwiftUI and Flutter. Rules, tokens, components, templates and a review checklist.",
+  "author": {
+    "name": "Mert Demirdöven",
+    "url": "https://github.com/Guidin9"
+  },
+  "homepage": "https://github.com/Guidin9/liquid-glass-design",
+  "repository": "https://github.com/Guidin9/liquid-glass-design",
+  "license": "Apache-2.0",
+  "keywords": ["design", "ui", "liquid-glass", "ios", "apple", "android", "jetpack-compose", "web", "css", "windows", "winui", "swiftui", "flutter"]
+}

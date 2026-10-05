@@ -1,0 +1,19 @@
+liquid-glass-design
+Copyright 2026 Mert Demirdöven
+
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+This product includes code adapted from the Backdrop Catalog of Kyant0/AndroidLiquidGlass
+(https://github.com/Kyant0/AndroidLiquidGlass), licensed under the Apache License, Version 2.0:
+  skills/liquid-glass-design/assets/android-compose/glass/*.kt
+Each adapted file states its origin and the changes made.
+
+Icon path data in skills/liquid-glass-design/assets/web/demo.html comes from Material Symbols by Google,
+licensed under the Apache License, Version 2.0.
+
+Inter (https://github.com/rsms/inter) is referenced, not bundled; it is licensed under the SIL Open Font
+License 1.1.
+
+Apple, iOS, iPadOS, macOS, SF Pro and SF Symbols are trademarks of Apple Inc. This project is not
+affiliated with, endorsed by or sponsored by Apple Inc. It describes a design approach based on Apple's
+publicly available Human Interface Guidelines and developer documentation.

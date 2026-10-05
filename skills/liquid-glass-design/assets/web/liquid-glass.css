@@ -1,0 +1,380 @@
+/* Liquid Glass components for the web. Requires tokens.css. Pair with liquid-glass.js for refraction
+   (Chromium), the inline title / scroll edge effects and the draggable tab-bar lens. */
+
+.lg-app {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--lg-bg);
+  color: var(--lg-label);
+  font-family: var(--lg-font);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- Page: large title, inline title, scroll edge effects ---------- */
+
+.lg-page {
+  box-sizing: border-box;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: calc(44px + env(safe-area-inset-top)) var(--lg-margin) var(--lg-bottom-clearance);
+}
+.lg-page > .lg-large-title { margin: 0 0 4px 4px; }
+
+/* Top bar: no background of its own; the scroll edge effect keeps the inline title legible.
+   liquid-glass.js sets --lg-edge (0..1, content under the bar) and --lg-inline (0..1, title shown). */
+.lg-topbar {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: calc(72px + env(safe-area-inset-top));
+  pointer-events: none;
+  z-index: 10;
+}
+.lg-topbar::before,
+.lg-topbar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: var(--lg-edge, 0);
+}
+.lg-topbar::before {
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent);
+  mask-image: linear-gradient(to bottom, #000 45%, transparent);
+}
+.lg-topbar::after {
+  background: linear-gradient(
+    to bottom,
+    var(--lg-bg) 0%,
+    color-mix(in srgb, var(--lg-bg) 97%, transparent) 62%,
+    transparent 100%
+  );
+}
+.lg-topbar__title {
+  position: absolute;
+  z-index: 1;
+  top: calc(12px + env(safe-area-inset-top));
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  opacity: var(--lg-inline, 0);
+}
+
+.lg-bottom-edge {
+  position: fixed;
+  inset: auto 0 0 0;
+  height: calc(96px + env(safe-area-inset-bottom));
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--lg-bg) 96%, transparent) 0%,
+    color-mix(in srgb, var(--lg-bg) 70%, transparent) 55%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 9;
+}
+
+/* ---------- Inset grouped lists ---------- */
+
+.lg-section { margin-top: 28px; }
+.lg-section__header { margin: 0 16px 8px; }
+.lg-section__footer { margin: 8px 16px 0; color: var(--lg-label-2); }
+
+.lg-group {
+  background: var(--lg-cell);
+  border-radius: var(--lg-radius-group);
+  overflow: hidden;
+}
+
+.lg-row {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: var(--lg-row-height);
+  padding: 10px 16px;
+  margin: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: start;
+  text-decoration: none;
+  font: 400 17px/22px var(--lg-font);
+  letter-spacing: -0.3px;
+}
+/* Hairline separators inset to the text. */
+.lg-row + .lg-row::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 16px;
+  right: 0;
+  height: 1px;
+  transform: scaleY(0.5);
+  transform-origin: top;
+  background: var(--lg-separator);
+}
+.lg-group--icons .lg-row + .lg-row::before { left: 58px; }
+
+a.lg-row,
+button.lg-row,
+label.lg-row { cursor: pointer; }
+a.lg-row:active,
+button.lg-row:active { background: var(--lg-fill); }
+.lg-row:focus-visible { outline: 2px solid var(--lg-tint); outline-offset: -2px; }
+
+.lg-row__title { flex: 1; min-width: 0; }
+.lg-row__subtitle { display: block; color: var(--lg-label-2); font: 400 13px/18px var(--lg-font); letter-spacing: -0.1px; }
+.lg-row__detail { color: var(--lg-label-3); font-variant-numeric: tabular-nums; }
+.lg-row__value { color: var(--lg-label-2); font-variant-numeric: tabular-nums; }
+.lg-row--action { color: var(--lg-tint); }
+.lg-row--destructive { color: var(--lg-red); }
+.lg-row--control { flex-direction: column; align-items: stretch; gap: 10px; padding-block: 12px; }
+
+.lg-chevron {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  margin-inline: 2px 4px;
+  border-top: 2px solid var(--lg-label-3);
+  border-right: 2px solid var(--lg-label-3);
+  transform: rotate(45deg);
+}
+
+.lg-icon-tile {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--lg-radius-icon);
+  color: #fff;
+  background: var(--lg-tile, var(--lg-tint));
+}
+.lg-icon-tile svg { width: 19px; height: 19px; fill: currentColor; }
+
+/* ---------- Glass (navigation layer only) ---------- */
+
+.lg-glass {
+  position: relative;
+  box-sizing: border-box;
+  isolation: isolate;
+  background: var(--lg-glass-tint);
+  border: 1px solid var(--lg-glass-border);
+  box-shadow: var(--lg-glass-shadow);
+  -webkit-backdrop-filter: blur(var(--lg-glass-blur)) saturate(var(--lg-glass-saturate));
+  backdrop-filter: blur(var(--lg-glass-blur)) saturate(var(--lg-glass-saturate));
+}
+/* Specular rim: brighter toward the top-left light, dimmer bottom-right. */
+.lg-glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    var(--lg-rim-strong) 0%,
+    var(--lg-rim-soft) 35%,
+    var(--lg-rim-soft) 65%,
+    color-mix(in srgb, var(--lg-rim-strong) 55%, transparent) 100%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ---------- Floating tab bar ---------- */
+
+.lg-tabbar {
+  --lg-tabs: 2;
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--lg-tabbar-bottom) + env(safe-area-inset-bottom));
+  z-index: 20;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  width: min(calc(100vw - 32px), calc(var(--lg-tabs) * 104px + 8px));
+  height: var(--lg-tabbar-height);
+  padding: 4px;
+  border-radius: 999px;
+  transform: translateX(-50%) scale(var(--lg-bar-scale, 1));
+  transition: transform 0.35s var(--lg-ease-gel);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.lg-tabbar.is-pressed { --lg-bar-scale: 1.03; }
+
+.lg-tab {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--lg-label);
+  font: 600 10px/12px var(--lg-font);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.lg-tab svg { width: 24px; height: 24px; fill: currentColor; }
+.lg-tab[aria-selected="true"] { color: var(--lg-tint); }
+.lg-tab:focus-visible { outline: 2px solid var(--lg-tint); outline-offset: -2px; }
+
+/* Selection lens: a quiet pill at rest; while pressed it lifts and turns to glass. */
+.lg-tabbar__lens {
+  position: absolute;
+  z-index: 1;
+  top: 4px;
+  left: 4px;
+  width: calc((100% - 8px) / var(--lg-tabs));
+  height: calc(100% - 8px);
+  border-radius: 999px;
+  background: var(--lg-glass-selection);
+  transform: translateX(calc(var(--lg-index, 0) * 100%)) scale(var(--lg-lens-scale, 1));
+  transition: transform 0.35s var(--lg-ease-snappy), background 0.2s, box-shadow 0.2s;
+}
+.lg-tabbar.is-pressed .lg-tabbar__lens {
+  --lg-lens-scale: 1.25;
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5), inset 0 1px 3px rgba(255, 255, 255, 0.4), 0 6px 18px rgba(0, 0, 0, 0.18);
+  -webkit-backdrop-filter: saturate(220%) brightness(1.08);
+  backdrop-filter: saturate(220%) brightness(1.08);
+}
+.lg-tabbar.is-dragging .lg-tabbar__lens { transition: background 0.2s, box-shadow 0.2s; }
+
+/* ---------- Toggle (iOS 26 proportions); the knob turns to glass while pressed ---------- */
+
+.lg-toggle {
+  position: relative;
+  flex: none;
+  display: inline-block;
+  width: 64px;
+  height: 28px;
+}
+.lg-toggle input {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.lg-toggle__track {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--lg-fill);
+  transition: background 0.25s;
+}
+.lg-toggle input:checked + .lg-toggle__track { background: var(--lg-toggle-on, var(--lg-green)); }
+.lg-toggle input:focus-visible + .lg-toggle__track { outline: 2px solid var(--lg-tint); outline-offset: 2px; }
+.lg-toggle__knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 40px;
+  height: 24px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15), 0 0 1px rgba(0, 0, 0, 0.12);
+  transition: transform 0.4s var(--lg-ease-gel), background 0.2s, box-shadow 0.2s;
+  pointer-events: none;
+}
+.lg-toggle input:checked ~ .lg-toggle__knob { transform: translateX(20px); }
+.lg-toggle input:active ~ .lg-toggle__knob {
+  transform: scale(1.35);
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.75), inset 0 1px 3px rgba(255, 255, 255, 0.6), 0 4px 12px rgba(0, 0, 0, 0.16);
+  -webkit-backdrop-filter: saturate(220%) brightness(1.1);
+  backdrop-filter: saturate(220%) brightness(1.1);
+}
+.lg-toggle input:checked:active ~ .lg-toggle__knob { transform: translateX(20px) scale(1.35); }
+
+/* ---------- Segmented control ---------- */
+
+.lg-segmented {
+  --lg-segments: 2;
+  position: relative;
+  box-sizing: border-box;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  height: 36px;
+  padding: 2px;
+  border-radius: 999px;
+  background: var(--lg-fill);
+}
+.lg-segmented input { position: absolute; opacity: 0; pointer-events: none; }
+.lg-segmented label {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  color: var(--lg-label);
+  font: 500 15px/20px var(--lg-font);
+  letter-spacing: -0.2px;
+  cursor: pointer;
+}
+.lg-segmented input:checked + label { font-weight: 600; }
+.lg-segmented input:focus-visible + label { outline: 2px solid var(--lg-tint); outline-offset: -2px; }
+.lg-segmented__thumb {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: 2px;
+  width: calc((100% - 4px) / var(--lg-segments));
+  border-radius: 999px;
+  background: var(--lg-thumb);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12), 0 3px 1px rgba(0, 0, 0, 0.04);
+  transition: transform 0.35s var(--lg-ease-snappy);
+}
+.lg-segmented:has(input:nth-of-type(2):checked) .lg-segmented__thumb { transform: translateX(100%); }
+.lg-segmented:has(input:nth-of-type(3):checked) .lg-segmented__thumb { transform: translateX(200%); }
+.lg-segmented:has(input:nth-of-type(4):checked) .lg-segmented__thumb { transform: translateX(300%); }
+.lg-segmented:has(input:nth-of-type(5):checked) .lg-segmented__thumb { transform: translateX(400%); }
+
+/* ---------- Buttons ---------- */
+
+.lg-button {
+  box-sizing: border-box;
+  height: 44px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--lg-label);
+  font: 600 17px/22px var(--lg-font);
+  letter-spacing: -0.3px;
+  cursor: pointer;
+}
+.lg-button--prominent { background: var(--lg-tint); color: #fff; }
+.lg-button:focus-visible { outline: 2px solid var(--lg-tint); outline-offset: 2px; }
+
+/* ---------- Motion preferences ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .lg-tabbar,
+  .lg-tabbar__lens,
+  .lg-toggle__knob,
+  .lg-segmented__thumb { transition-duration: 0.01ms !important; }
+  .lg-tabbar.is-pressed { --lg-bar-scale: 1; }
+  .lg-tabbar.is-pressed .lg-tabbar__lens { --lg-lens-scale: 1; }
+}
